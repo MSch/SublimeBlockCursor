@@ -3,7 +3,7 @@ import sublime_plugin
 
 
 class SublimeBlockCursor(sublime_plugin.EventListener):
-    def view_is_widget(view):
+    def view_is_widget(self, view):
         settings = view.settings()
         return bool(settings.get('is_widget'))
 
@@ -20,9 +20,10 @@ class SublimeBlockCursor(sublime_plugin.EventListener):
 
     def on_selection_modified(self, view):
         is_vintage_mode = "Vintage" not in view.settings().get('ignored_packages', [])
+        is_vintageous_mode = "Vintageous" not in view.settings().get('ignored_packages', [])
         command_mode = view.settings().get('command_mode')
 
-        if view_is_widget(view) or (is_vintage_mode and not command_mode):
+        if self.view_is_widget(view) or (is_vintage_mode and not command_mode) or (is_vintageous_mode and not command_mode):
             view.erase_regions('SublimeBlockCursorListener')
             return
 
